@@ -77,11 +77,43 @@ function validarfrmDeposito() {
     return true;
 }
 
-function usarioLogueado() {
-    // Simular que el usuario ha iniciado sesión
-    var usuario = {
-        nombre: "Juan Perez",
-        email: "juan.perez@ejemplo.cl"
-    };
-    return usuario;
+
+
+function calcularSaldo() {
+    // 1. Obtener la tabla por su ID
+    let tabla = document.getElementById('tblSaldos');
+    let filas = tabla.rows;
+
+    // 3. Iterar sobre cada fila
+    for (let i = 0; i < filas.length; i++) {
+    let fila = filas[i];
+    // 4. Acceder a las celdas (TD/TH) de esa fila
+    const celdas = fila.cells;
+        // 5. Iterar sobre cada celda
+        for (let j = 0; j < celdas.length; j++) {
+            const celda = celdas[j];
+            // 6. Obtener el contenido de la celda
+            console.log(`Fila ${i}, Celda ${j}: ${celda.textContent}`);
+        }
+    }
+
+    let depositos = 0;
+    let retiros = 0;
+    let saldo = 0;
+    //Saltar las dos últimas filas de la tabla (Totales)
+    for(let i = 1; i < filas.length - 2; i++) {
+        let fila = filas[i];
+        let montoCelda = fila.cells[2].textContent;
+        alert(montoCelda);
+        let monto = parseFloat(montoCelda.replace('$', ''));
+        if (fila.cells[1].textContent === "Depósito") {
+            depositos += monto;
+            //alert(depositos);
+        } else if (fila.cells[1].textContent === "Envío") {
+            retiros += monto;
+            //alert(retiros);
+        }
+    }
+    saldo=depositos-retiros;
+    document.getElementById("tblSaldos").innerHTML +="<tr><th colspan='2'>Total Saldos = (Depósitos-Envíos)</th><th colspan='2'>$" + saldo + "</th></tr>"
 }
